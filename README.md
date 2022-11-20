@@ -23,7 +23,7 @@ Clone the code then run npm i and node index.js
 
 ## Usage
 
-link vid
+https://drive.google.com/file/d/1qV7y6ZsKJmGOwb44BcW-ex2qm0bYXSn0/view?usp=sharing
 
 ## Contributors
 
