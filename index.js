@@ -2,11 +2,10 @@ const fs = require("fs");
 const jest = require("jest");
 const inquirer = require("inquirer");
 
-const employee = require("./lib/employee");
 const manager = require("./lib/manager");
 const engineer = require("./lib/engineer");
 const intern = require("./lib/intern");
-const buildTeam =require("./src/writeHTML");
+const {buildHTML, buildCards} = require("./src/writeHTML");
 
 const teamInfo = [];
 
@@ -20,7 +19,7 @@ function managerInfo () {
         {
             type: "input",
             message: "Please enter team manager's employee ID",
-            name: "ID"
+            name: "id"
         },
         {
             type: "input",
@@ -54,7 +53,7 @@ function managerInfo () {
           newEngineer();
           break;
         case "intern":
-          nweIntern();
+          newIntern();
           break;
         case "finish build":
           buildTeam(teamInfo);
@@ -65,7 +64,24 @@ function managerInfo () {
 function newEngineer(){
     inquirer .prompt([
         {
-// engineer questions
+            type: "input",
+            message: "Please enter engineer's name",
+            name: "name"       
+        },
+        {
+            type: "input",
+            message: "Please enter engineer's employee ID",
+            name: "id"       
+        },
+        {
+            type: "input",
+            message: "Please enter engineer's email",
+            name: "email"       
+        },
+        {
+            type: "input",
+            message: "Please enter engineer's Github username",
+            name: "gh"       
         },
         {
             type: "list",
@@ -82,7 +98,7 @@ function newEngineer(){
             ans.name,
             ans.id,
             ans.email,
-            ans.number
+            ans.gh
           )
         )
     console.log(teamInfo)
@@ -91,7 +107,7 @@ function newEngineer(){
           newEngineer();
           break;
         case "intern":
-          nweIntern();
+          newIntern();
           break;
         case "finish build":
           buildTeam(teamInfo);
@@ -103,7 +119,24 @@ function newEngineer(){
 function newIntern(){
     inquirer .prompt([
         {
-// intern questions
+            type: "input",
+            message: "Please enter intern's name",
+            name: "name"       
+        },
+        {
+            type: "input",
+            message: "Please enter intern's employee ID",
+            name: "id"       
+        },
+        {
+            type: "input",
+            message: "Please enter intern's email",
+            name: "email"       
+        },
+        {
+            type: "input",
+            message: "Please enter intern's school",
+            name: "school"       
         },
         {
             type: "list",
@@ -115,27 +148,36 @@ function newIntern(){
     ])
     .then((ans) => {
         teamInfo.push(
-          new engineer(
+          new intern(
             ans.name,
             ans.id,
             ans.email,
-            ans.number
+            ans.school
           )
-        )
+        );
     console.log(teamInfo)
     switch (ans.teamAdd) {
         case "engineer":
           newEngineer();
           break;
         case "intern":
-          nweIntern();
+          newIntern();
           break;
         case "finish build":
           buildTeam(teamInfo);
+       
           break;
       }
     });
 }
+
+function buildTeam(teamInfo) {
+   const cardTeam = buildCards(teamInfo);
+   const HTML = buildHTML(cardTeam);
+   console.log(HTML)
+   fs.writeFile('./dist/index.html', HTML, (err) =>
+   err ? console.log(err) : console.log('Successfully created index.html!')
+)};
 
 module.exports = managerInfo;
 managerInfo();
